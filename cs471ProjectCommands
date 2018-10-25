@@ -1,0 +1,7 @@
+source hubEnv/bin/activate
+deactivate
+
+python manage.py runserver
+
+cd frontend/
+npm run start --webpack=webpack.config.dev.js
