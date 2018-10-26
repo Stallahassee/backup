@@ -1,4 +1,9 @@
 source hubEnv/bin/activate
+
+
+pip freeze > requirements.txt (delete file before refreezing)
+pip install -r requirements.txt
+
 deactivate
 
 python manage.py runserver
