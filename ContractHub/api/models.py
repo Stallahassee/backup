@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import ugettext_lazy as _
@@ -37,23 +38,33 @@ class UserManager(BaseUserManager):
             raise ValueError('You are not a Super User')
         return self._create_user(email, password, **extra_fields)
 
+
 # Create your models here.
 
-#Replaces Django's basic User model
-# CREATE TABLE users (
+# CREATE TABLE bus (
+#     b_id SERIAL PRIMARY KEY,
+#     b_date DATE NOT NULL,
+#     b_looking BOOLEAN NOT NULL,
+#     b_description TEXT NOT NULL,
+#     b_web BYTEA NOT NULL
+# );
+class Bus(models.Model):
+    id = models.AutoField(primary_key=True)
+    looking = models.BooleanField()
+    description = models.TextField()
+    web = models.BinaryField()
+
+
+# CREATE TABLE stu (
 #   u_id SERIAL PRIMARY KEY,
 #   u_name VARCHAR(255) NOT NULL,
 #   u_pass VARCHAR(32) NOT NULL,
-#   u_email VARCHAR(255),
+#   u_email VARCHAR(255) UNIQUE,
 #   u_date DATE NOT NULL,
 #   u_resume TEXT
 # );
-class User(AbstractUser):
+class Stu(models.Model):
     id =  models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, help_text='username')
-    password = models.CharField(max_length=32, help_text='username') #32 for md5 hash
-    email = models.EmailField(_('email address'), unique=True)
-    date = models.DateField(_("Date"), default=datetime.date.today)
     resume = models.BinaryField()
     intrests = models.TextField()
 
@@ -61,6 +72,17 @@ class User(AbstractUser):
       # REQUIRED_FIELDS = []
 
       # objects = UserManager()
+
+#Replaces Django's basic User model
+class User(AbstractUser):
+    email = models.EmailField(_('email address'), unique=True)
+    USERNAME_FIELD  = 'email'
+    date = models.DateField(_("Date"), default=datetime.now)
+    name = models.CharField(max_length=255, help_text='username')
+    Bus = models.ForeignKey(Bus, blank = True, null=True, on_delete=models.CASCADE)
+    Stu = models.ForeignKey(Stu, blank = True, null=True, on_delete=models.CASCADE)
+    REQUIRED_FIELDS = []
+    objects = UserManager()
 
 
 # CREATE TABLE contract (
@@ -77,24 +99,17 @@ class User(AbstractUser):
 class Contract(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255, help_text='name')
-    create = models.DateField(_("Date"), default=datetime.date.today)
-    update = models.DateField(_("Date"), default=datetime.date.today)
+    create = models.DateField(_("Date"), default=datetime.now)
+    update = models.DateField(_("Date"), default=datetime.now)
     status = models.PositiveSmallIntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
+    date = models.DateField(_("Date"), default=datetime.now)
+    stu = models.ForeignKey(Stu,on_delete=models.CASCADE)#May need to change later but won't let me set it to anything else
+    bus = models.ForeignKey(Bus,on_delete=models.CASCADE)#May need to change later but won't let me set it to anything else
     content = models.BinaryField()
 
 
-# CREATE TABLE bus (
-#     b_id SERIAL PRIMARY KEY,
-#     b_date DATE NOT NULL,
-#     b_looking BOOLEAN NOT NULL,
-#     b_description TEXT NOT NULL,
-#     b_web BYTEA NOT NULL
-# );
-class Bus(models.Model):
-    id = models.AutoField(primary_key=True)
-    date = models.DateField(_("Date"), default=datetime.date.today)
-    looking = models.BooleanField()
-    description = models.TextField()
-    web = models.BinaryField()
+# class Sub(AbstractUser):#subscription
+#     id =  models.AutoField(primary_key=True)
+#     relationship = models.CharField(max_length=255, help_text='username')
+#     User = models.ForeignKey(User)
+#     User = models.ForeignKey(User)

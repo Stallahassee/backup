@@ -8,6 +8,10 @@
   height: 80px;
 }
 
+.error {
+  color: red;
+}
+
 .subTitle{
   font-size: 4vmin;
 }

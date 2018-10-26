@@ -15,7 +15,7 @@ class SignUp extends Component {
       newState[name] = value;
       return newState;
     });
-  };
+  }; 
 
   render(){
     return(

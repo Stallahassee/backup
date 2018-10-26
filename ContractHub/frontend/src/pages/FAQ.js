@@ -22,3 +22,4 @@ class FAQ extends Component {
 }
 
 export default FAQ;
+ 

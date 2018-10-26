@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'rest_framework',
     'api',
+    'knox',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,11 @@ TEMPLATES = [
     },
 ]
 
+#Rest Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
+
 WSGI_APPLICATION = 'ContractHub.wsgi.application'
 
 #Bundler for the React Frontend
@@ -86,7 +92,7 @@ WEBPACK_LOADER = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hubDB',
+        'NAME': 'newHubDB',
         'USER': 'postgres',
         'PASSWORD': 'ta072897',
         'HOST': 'localhost',
