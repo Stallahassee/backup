@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
-import{ Link } from "react-router-dom";
+import{Link, Redirect} from "react-router-dom";
 
 import {auth} from '../actions';
 
@@ -20,23 +20,26 @@ class Login extends Component {
   //onChange={this.handle_change}
 
   onSubmit = e => {
-    e.preventDefault()
-    this.props.onSubmit(this.state.email, this.state.password)
+    e.preventDefault();
+    this.props.login(this.state.email, this.state.password);
   }
 
   render(){
+    if (this.props.isAuthenticated) {
+      return <Redirect to="/profile" />
+    }
     return(
       <div>
         <div className="App-buffer-post-land"></div>
         <form onSubmit={this.onSubmit}>
-        {this.props.errors.length > 0 && (
-          <ul className="error">
-            {this.props.errors.map(error => (
-              <li key={error.field}>{error.message}</li>
-            ))}
-          </ul>
-        )}
-          <input type="email" name="email" placeholder="Email" value={this.state.email} onChange={e => this.setState({password: e.target.value})}/>
+          {this.props.errors.length > 0 && (
+            <ul className="error">
+              {this.props.errors.map(error => (
+                <li key={error.field}>{error.message}</li>
+              ))}
+            </ul>
+          )}
+          <input type="email" name="email" placeholder="Email" value={this.state.email} onChange={e => this.setState({email: e.target.value})}/>
           <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={e => this.setState({password: e.target.value})}/>
           <input type="submit" value="Login"/>
           <Link to="/signup">Sign Up Here</Link>
@@ -67,4 +70,4 @@ const mapDispatchToProps = dispatch => {
   };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps,mapDispatchToProps)(Login);

@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
 import auth from "./auth";
 
-const store = combineReducers({
+const index = combineReducers({
   auth,
 })
 
-export default store;
+export default index;

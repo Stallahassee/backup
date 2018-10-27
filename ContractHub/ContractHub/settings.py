@@ -41,9 +41,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'knox',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = ('localhost:3000')
 
 ROOT_URLCONF = 'ContractHub.urls'
 
@@ -73,7 +77,13 @@ TEMPLATES = [
 
 #Rest Framework Settings
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAdminUser',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'knox.auth.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
 }
 
 WSGI_APPLICATION = 'ContractHub.wsgi.application'

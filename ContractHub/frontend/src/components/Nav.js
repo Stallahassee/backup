@@ -1,5 +1,5 @@
 //import packages
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
 //import actions/reducers
@@ -32,6 +32,10 @@ const mapStateToProps = state => {
   }
 }
 
-const mapStateToDispatch = () => {}
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(auth.logout()),
+  }
+}
 
-export default connect(MapStateToProps,MapDispatchToProps)(Nav)
+export default connect(mapStateToProps,mapDispatchToProps)(Nav)
