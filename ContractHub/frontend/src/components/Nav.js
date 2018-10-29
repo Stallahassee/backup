@@ -13,7 +13,7 @@ class Nav extends Component {
         <div className="nav">
           <NavLink to="/">Home</NavLink>
           {this.props.auth.isLoggedIn ?
-            (<NavLink to="/logout">Logout</NavLink>)
+            (<a onClick=this.props.logout>Logout</a>)
           :
             (<NavLink to="/login">Login</NavLink>)}
           <NavLink to="/students">Students</NavLink>
